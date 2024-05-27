@@ -1,0 +1,758 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  version: 1.0.0
+servers:
+  - url: http://api.example.com/v1
+
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "your-auth-token"
+    TypeInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "type name"
+    MarketInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "market name"
+        latitude:
+          type: number
+          format: double
+          example: 40.712776
+        longitude:
+          type: number
+          format: double
+          example: -74.005974
+    NewInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "unique-id"
+        title:
+          type: string
+          example: "News Title"
+        subtitle:
+          type: string
+          example: "News Subtitle"
+        text:
+          type: string
+          example: "Full news text"
+        image_url:
+          type: string
+          example: "http://example.com/image.jpg"
+    NewInfoShortened:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "unique-id"
+        title:
+          type: string
+          example: "Short News Title"
+        subtitle:
+          type: string
+          example: "Short News Subtitle"
+        reduced_text:
+          type: string
+          example: "Shortened news text"
+        image_url:
+          type: string
+          example: "http://example.com/image.jpg"
+    UserInfoOutput:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+        password_hash:
+          type: string
+          example: "hashed_password"
+        salt:
+          type: string
+          example: "random_salt"
+        name:
+          type: string
+          example: "User Name"
+        image_url:
+          type: string
+          example: "http://example.com/user.jpg"
+    ProductSummaryOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type_id:
+          type: integer
+          example: 10
+        type:
+          type: string
+          example: "Product Type"
+        producer:
+          type: string
+          example: "Producer Name"
+        price:
+          type: number
+          format: double
+          example: 19.99
+        market_id:
+          type: integer
+          example: 2
+        market_name:
+          type: string
+          example: "Market Name"
+    ProductInfoOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type_id:
+          type: integer
+          example: 10
+        type:
+          type: string
+          example: "Product Type"
+        producer:
+          type: string
+          example: "Producer Name"
+        origin:
+          type: string
+          example: "Origin Country"
+        food:
+          type: string
+          example: "Food Type"
+        age:
+          type: integer
+          example: 2
+        race:
+          type: string
+          example: "Race Type"
+        price:
+          type: number
+          format: double
+          example: 19.99
+        market_id:
+          type: integer
+          example: 2
+        market_name:
+          type: string
+          example: "Market Name"
+        long_description:
+          type: string
+          example: "Long description of the product"
+        nutrition_table_data:
+          type: string
+          example: "Nutrition table data as a string"
+    UserInfoInput:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+        password:
+          type: string
+          example: "user_password"
+        name:
+          type: string
+          example: "User Name"
+        image_url:
+          type: string
+          example: "http://example.com/user.jpg"
+    ProductInfoInput:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type_id:
+          type: integer
+          example: 10
+        producer:
+          type: string
+          example: "Producer Name"
+        origin:
+          type: string
+          example: "Origin Country"
+        food:
+          type: string
+          example: "Food Type"
+        age:
+          type: integer
+          example: 2
+        race:
+          type: string
+          example: "Race Type"
+        price:
+          type: number
+          format: double
+          example: 19.99
+        market_id:
+          type: integer
+          example: 2
+        long_description:
+          type: string
+          example: "Long description of the product"
+        nutrition_table_data:
+          type: string
+          example: "Nutrition table data as a string"
+
+paths:
+  /user:
+    get:
+      tags:
+        - UserService
+      summary: Get all users
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserInfoOutput'
+    post:
+      tags:
+        - UserService
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfoInput'
+      responses:
+        '201':
+          description: User created successfully
+
+  /user/{id}:
+    get:
+      tags:
+        - UserService
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoOutput'
+
+  /user:
+    put:
+      tags:
+        - UserService
+      summary: Update user information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfoInput'
+      responses:
+        '200':
+          description: User updated successfully
+
+  /block/{id}:
+    put:
+      tags:
+        - UserService
+        - AuthenticationService
+      summary: Block a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User blocked successfully
+
+  /unblock/{id}:
+    put:
+      tags:
+        - UserService
+        - AuthenticationService
+      summary: Unblock a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User unblocked successfully
+
+  /user/{token_id}:
+    get:
+      tags:
+        - AuthenticationService
+      summary: Get user by token ID
+      parameters:
+        - name: token_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoOutput'
+
+  /token/{user_id}:
+    get:
+      tags:
+        - AuthenticationService
+      summary: Get token by user ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+
+  /token:
+    post:
+      tags:
+        - AuthenticationService
+      summary: Generate a new token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "user_password"
+      responses:
+        '201':
+          description: Token generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+
+  /token/{id}:
+    delete:
+      tags:
+        - AuthenticationService
+      summary: Delete a token by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Token deleted successfully
+
+  /recover:
+    post:
+      tags:
+        - AuthenticationService
+      summary: Recover user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@example.com"
+      responses:
+        '200':
+          description: Recovery initiated successfully
+
+  /new:
+    get:
+      tags:
+        - NewsService
+      summary: Get all news
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewInfo'
+
+  /new/{id}:
+    get:
+      tags:
+        - NewsService
+      summary: Get news by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewInfo'
+
+  /new:
+    post:
+      tags:
+        - NewsService
+      summary: Create a new news entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewInfo'
+      responses:
+        '201':
+          description: News created successfully
+
+  /new/{id}:
+    delete:
+      tags:
+        - NewsService
+      summary: Delete a news entry by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: News deleted successfully
+
+  /new/{id}:
+    put:
+      tags:
+        - NewsService
+      summary: Update a news entry by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewInfo'
+      responses:
+        '200':
+          description: News updated successfully
+
+  /market:
+    get:
+      tags:
+        - SuperMarketService
+      summary: Get all markets
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketInfo'
+
+  /market/{id}:
+    get:
+      tags:
+        - SuperMarketService
+      summary: Get market by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketInfo'
+
+  /market:
+    post:
+      tags:
+        - SuperMarketService
+      summary: Create a new market
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarketInfo'
+      responses:
+        '201':
+          description: Market created successfully
+
+  /market/{id}:
+    put:
+      tags:
+        - SuperMarketService
+      summary: Update a market by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarketInfo'
+      responses:
+        '200':
+          description: Market updated successfully
+
+  /market/{id}:
+    delete:
+      tags:
+        - SuperMarketService
+      summary: Delete a market by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Market deleted successfully
+
+  /favorite:
+    get:
+      tags:
+        - SuperMarketService
+        - ProductService
+      summary: Get favorite markets or products
+      responses:
+        '200':
+          description: Successful response
+
+  /favorite/{market_id}:
+    put:
+      tags:
+        - SuperMarketService
+        - ProductService
+      summary: Add market or product to favorites
+      parameters:
+        - name: market_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Added to favorites successfully
+
+  /type:
+    get:
+      tags:
+        - ProductService
+      summary: Get all product types
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TypeInfo'
+
+  /type:
+    post:
+      tags:
+        - ProductService
+      summary: Create a new product type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TypeInfo'
+      responses:
+        '201':
+          description: Product type created successfully
+
+  /type/{id}:
+    delete:
+      tags:
+        - ProductService
+      summary: Delete a product type by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product type deleted successfully
+
+  /product:
+    get:
+      tags:
+        - ProductService
+      summary: Get all products
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductSummaryOutput'
+
+  /product/type/{type_id}:
+    get:
+      tags:
+        - ProductService
+      summary: Get products by type ID
+      parameters:
+        - name: type_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductSummaryOutput'
+
+  /product:
+    post:
+      tags:
+        - ProductService
+      summary: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInfoInput'
+      responses:
+        '201':
+          description: Product created successfully
+
+  /product:
+    put:
+      tags:
+        - ProductService
+      summary: Update a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInfoInput'
+      responses:
+        '200':
+          description: Product updated successfully
+
+  /product/{id}:
+    delete:
+      tags:
+        - ProductService
+      summary: Delete a product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product deleted successfully
+
+  /product/{id}:
+    get:
+      tags:
+        - ProductService
+      summary: Get product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductInfoOutput'
+
+  /featured:
+    get:
+      tags:
+        - ProductService
+      summary: Get featured products
+      responses:
+        '200':
+          description: Successful response
