@@ -1,8 +1,9 @@
-# Web project
+The app blueprint puts everything together, including: 
 
-Micro-frontends and ADRs (architectural design records)
-Narrative arc for the whole app
-Stories and corresponding plots and places
-View components and corresponding view models
-FE services
-FE orchestration
+- Front-end blueprint (already submitted)
+- Back-end blueprint
+    - BE services
+    - Requests
+    - BE services data (business objects)
+    - BE orchestration (if needed)
+    - APIs (swagger file)
